@@ -1,0 +1,56 @@
+# virtual methods
+.method public check(Ljava/lang/String;Ljava/lang/String;)V    #代表check()方法
+    .locals 2
+    .param p1, "name"    # Ljava/lang/String;   将name参数赋值给p1,代表用户名
+    .param p2, "pass"    # Ljava/lang/String;   将pass参数赋值给p2,代表密码
+
+    .prologue			 # 这一行代表这个方法要开始了
+    const/4 v1, 0x0		 
+
+    .line 28
+    const-string v0, "hfdcxy" 		# 将字符串"hfdcxy"赋值给v0;
+
+    invoke-virtual {p1, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z 	#这里将字符串p1和v0作为参数传给equals函数;
+
+    move-result v0		# 将equals函数执行的结果给v0;
+
+    if-eqz v0, :cond_0  # 如果v0等于0则执行cond_0后的语句否则继续往下执行
+
+    const-string v0, "1234"		#将字符串"1234"赋值给v0
+
+    invoke-virtual {p2, v0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z 		# 将p2和v0参数传给equals函数
+
+    move-result v0	# 将上一句equals函数执行的结果赋值给v0
+
+    if-eqz v0, :cond_0	# 如果v0等于0则执行cond_0后的语句否则继续往下执行
+
+    .line 30
+    const-string v0, "\u767b\u5f55\u6210\u529f"		#用const-string指令定义一常量字符串v0，内容为"\u767b\u5f55\u6210\u529f"(经Unicode编码的中文字符，表示“登录成功”含义)
+
+    invoke-static {p0, v0, v1}, Landroid/widget/Toast;->makeText(Landroid/content/Context;Ljava/lang/CharSequence;I)Landroid/widget/Toast;
+		#通过invoke-static调用android/widget/Toast类的makeText静态方法创建一Toast对象
+		#接受三个参数：一Context对象(p0，Android中通常是Activity或Service等上下文对象);一CharSequence对象，刚定义的常量字符串v0;一整数v1
+
+    move-result-object v0
+		#通过move-result-object v0指令存储makeText方法的结果（一Toast对象）存储在v0中	
+    
+	invoke-virtual {v0}, Landroid/widget/Toast;->show()V
+		#用invoke - virtual调用v0(Toast对象）show方法将Toast消息显示在屏幕上
+
+    .line 34
+    :goto_0
+    return-void
+	# return-void表示方法（或代码块）执行结束，没有返回值
+
+    .line 33
+    :cond_0
+    const-string v0, "\u767b\u5f55\u5931\u8d25"
+
+    invoke-static {p0, v0, v1}, Landroid/widget/Toast;->makeText(Landroid/content/Context;Ljava/lang/CharSequence;I)Landroid/widget/Toast;
+
+    move-result-object v0
+
+    invoke-virtual {v0}, Landroid/widget/Toast;->show()V
+
+    goto :goto_0
+.end method
